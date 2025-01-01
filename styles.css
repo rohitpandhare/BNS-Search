@@ -1,0 +1,387 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f5f5f5;
+    color: #333;
+    padding: 20px;
+}
+
+/* Container Styles */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header Styles */
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #2c3e50;
+    font-size: 2.5em;
+}
+
+/* Search Box Styles */
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#searchInput {
+    flex: 1;
+    padding: 12px 15px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+#searchInput:focus {
+    border-color: #3498db;
+}
+
+/* Button Styles */
+button {
+    padding: 12px 24px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Results Container Styles */
+.results-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Result Item Styles */
+.result-item {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.result-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.result-item h3 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+.fragment {
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+}
+
+.meta-info {
+    font-size: 0.9em;
+    color: #888;
+    margin-bottom: 15px;
+}
+
+.meta-info span {
+    margin-right: 15px;
+}
+
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5em;
+    color: #2c3e50;
+    padding-right: 20px;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.download-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.download-btn:hover {
+    background-color: #45a049;
+}
+
+.download-icon {
+    font-size: 16px;
+}
+
+.close {
+    cursor: pointer;
+    font-size: 24px;
+    color: #666;
+    transition: color 0.3s;
+    padding: 5px;
+}
+
+.close:hover {
+    color: #333;
+}
+
+/* Document Content Styles */
+.document-content {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+    background-color: white;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.document-content p {
+    margin-bottom: 1em;
+}
+
+.document-content h1,
+.document-content h2,
+.document-content h3 {
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    color: #2c3e50;
+}
+
+/* Loading and Error States */
+.loading {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 20px;
+}
+
+.error {
+    color: #e74c3c;
+    text-align: center;
+    font-weight: bold;
+    padding: 20px;
+}
+
+.no-results {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 20px;
+}
+
+/* Print Styles for PDF Generation */
+@media print {
+    .document-content {
+        padding: 20px;
+        font-size: 12pt;
+        line-height: 1.6;
+        background-color: white;
+        color: black;
+    }
+
+    .document-content p {
+        margin-bottom: 10pt;
+    }
+
+    .document-content h1,
+    .document-content h2,
+    .document-content h3 {
+        margin-top: 16pt;
+        margin-bottom: 8pt;
+        color: black;
+    }
+
+    .document-content a {
+        text-decoration: none;
+        color: black;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .search-box {
+        flex-direction: column;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 10px;
+    }
+
+    .modal-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .header-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .download-btn {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+}
+
+/* Animation for loading states */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading::after {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-left: 8px;
+    border: 2px solid #666;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+}
+
+/* Document content specific styles */
+.document-content pre {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 10px 0;
+    font-family: monospace;
+}
+
+.document-content blockquote {
+    border-left: 4px solid #3498db;
+    padding-left: 15px;
+    margin: 15px 0;
+    color: #666;
+}
+
+.document-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+
+.document-content th,
+.document-content td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.document-content th {
+    background-color: #f8f9fa;
+}
+
+.document-content img {
+    max-width: 100%;
+    height: auto;
+    margin: 10px 0;
+}
+
+/* PDF specific styles */
+.pdf-content {
+    font-family: 'Times New Roman', Times, serif;
+    line-height: 1.6;
+    color: black;
+    background-color: white;
+}
+
+.pdf-content * {
+    page-break-inside: avoid;
+}
+
+.pdf-content h1,
+.pdf-content h2,
+.pdf-content h3 {
+    page-break-after: avoid;
+}
+
+.pdf-content p {
+    orphans: 3;
+    widows: 3;
+}
