@@ -330,6 +330,7 @@ button:disabled {
     overflow-x: auto;
     margin: 10px 0;
     font-family: monospace;
+    color:black;
 }
 
 .document-content blockquote {
