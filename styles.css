@@ -374,6 +374,7 @@ button:disabled {
 
 .pdf-content * {
     page-break-inside: avoid;
+    color: black;
 }
 
 .pdf-content h1,
