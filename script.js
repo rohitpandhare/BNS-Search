@@ -1,4 +1,4 @@
-const BASE_URL = "http://127.0.0.1:5000/";
+const BASE_URL = "https://try-backend-seven.vercel.app";
 
 let currentPage = 0; // Default to page 0
 
