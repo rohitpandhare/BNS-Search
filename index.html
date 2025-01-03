@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,15 +10,28 @@
     <!-- Add html2pdf library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
+
 <body>
     <div class="container">
         <h1>Search Cases Information</h1>
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="Enter search query...">
             <button onclick="performSearch()">Search</button>
+            
         </div>
-        <div id="results" class="results-container"></div>
+
+        <div class="pagination" id="pagination" style="display: none;">
+            <button id="prevButton" disabled>Previous</button>
+            <span id="currentPage">Page 0</span>
+            <button id="nextButton">Next</button>
+        </div>
+
+        <div id="results" class="results-container">
+            
+        </div>
     </div>
+
     <script src="script.js"></script>
 </body>
+
 </html>

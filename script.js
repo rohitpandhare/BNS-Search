@@ -1,8 +1,11 @@
-const BASE_URL = "https://try-backend-seven.vercel.app";
+const BASE_URL = "http://127.0.0.1:5000/";
+
+let currentPage = 0; // Default to page 0
 
 async function performSearch() {
     const searchInput = document.getElementById('searchInput');
     const resultsDiv = document.getElementById('results');
+    const paginationDiv = document.getElementById('pagination'); // Get pagination div
     const query = searchInput.value.trim();
 
     if (!query) {
@@ -10,18 +13,20 @@ async function performSearch() {
         return;
     }
 
+    currentPage = 0; // Reset page to 0 for a new query
+
     try {
         resultsDiv.innerHTML = '<p class="loading">Searching...</p>';
 
         const response = await fetch(`${BASE_URL}/search/`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 formInput: query,
-                pagenum: 0
-            })
+                pagenum: currentPage, // Always start from page 0 for a new search
+            }),
         });
 
         if (!response.ok) {
@@ -29,7 +34,12 @@ async function performSearch() {
         }
 
         const data = await response.json();
-        displayResults(data);
+
+        displayResults(data); // Display results
+        updatePaginationDisplay(); // Update current page display
+
+        // Show the pagination div after the first search
+        paginationDiv.style.display = 'flex'; // Show pagination controls
 
     } catch (error) {
         console.error('Search error:', error);
@@ -37,9 +47,9 @@ async function performSearch() {
     }
 }
 
-async function getDocument(docid) {
+async function getDocument(docId) {
     try {
-        const response = await fetch(`${BASE_URL}/doc/${docid}/`, {
+        const response = await fetch(`${BASE_URL}/doc/${docId}/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -51,13 +61,20 @@ async function getDocument(docid) {
         }
 
         const data = await response.json();
-        displayDocument(data);
+        
+        // Check if we have complete document content
+        if (data && data.doc) {
+            displayDocument(data);
+        } else {
+            throw new Error('Document content is incomplete or missing');
+        }
 
     } catch (error) {
-        console.error('Document fetch error:', error);
-        alert('Error fetching document');
+        console.error('Error fetching document:', error);
+        alert('Error loading document. Please try again.');
     }
 }
+
 
 function displayResults(data) {
     const resultsDiv = document.getElementById('results');
@@ -82,9 +99,12 @@ function displayResults(data) {
     resultsDiv.innerHTML = html;
 }
 
+// Enhanced displayDocument function
 function displayDocument(doc) {
     const modal = document.createElement('div');
     modal.className = 'modal';
+    
+    // Enhanced modal structure with better content handling
     modal.innerHTML = `
         <div class="modal-content">
             <div class="modal-header">
@@ -97,12 +117,27 @@ function displayDocument(doc) {
                 </div>
             </div>
             <div class="document-content">
-                ${doc.doc || 'No content available'}
+                ${sanitizeAndFormatContent(doc.doc || 'No content available')}
             </div>
         </div>
     `;
 
     document.body.appendChild(modal);
+}
+
+// Helper function to sanitize and format content
+function sanitizeAndFormatContent(content) {
+    // Remove any potentially harmful HTML/scripts
+    let sanitized = content
+        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+        .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '');
+    
+    // Preserve paragraphs and basic formatting
+    sanitized = sanitized
+        .replace(/\n/g, '<br>')
+        .replace(/<p>/g, '<p class="doc-paragraph">');
+    
+    return sanitized;
 }
 
 
@@ -167,3 +202,63 @@ document.getElementById('searchInput').addEventListener('keypress', (e) => {
         performSearch();
     }
 });
+
+
+
+function updatePaginationDisplay() {
+        document.getElementById('currentPage').innerText = `Page ${currentPage}`;
+        document.getElementById('prevButton').disabled = currentPage === 0; // Disable "Previous" button if on page 0
+    }
+
+//see 
+document.getElementById('nextButton').addEventListener('click', async () => {
+            const query = document.getElementById('searchInput').value;
+            if (!query) {
+                alert('Please enter a search query!');
+                return;
+            }
+        
+            currentPage++; // Increment to the next page
+            await fetchResults(query, currentPage);
+        });
+        
+document.getElementById('prevButton').addEventListener('click', async () => {
+            const query = document.getElementById('searchInput').value;
+            if (!query) {
+                alert('Please enter a search query!');
+                return;
+            }
+        
+            if (currentPage > 0) {
+                currentPage--; // Decrement to the previous page (minimum: 0)
+                await fetchResults(query, currentPage);
+            }
+        });
+        
+
+async function fetchResults(query, page) {
+                const resultsDiv = document.getElementById('results');
+            
+                try {
+                    resultsDiv.innerHTML = '<p class="loading">Loading results...</p>';
+            
+                    const response = await fetch(`${BASE_URL}/search/`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ formInput: query, pagenum: page }),
+                    });
+            
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+            
+                    const data = await response.json();
+            
+                    displayResults(data); // Display fetched results
+                    updatePaginationDisplay(); // Update pagination UI
+                } catch (error) {
+                    console.error('Fetch results error:', error);
+                    resultsDiv.innerHTML = '<p class="error">Error loading results</p>';
+                }
+            }
+            
